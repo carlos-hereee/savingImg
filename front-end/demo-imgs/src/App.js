@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
@@ -11,13 +12,12 @@ function App() {
 	const uploadedImage = useRef(null);
 	const imageUpLoader = useRef(null);
 
-	useEffect(async () => {
-		try {
-			const data = await axios.get(`${process.env.REACT_APP_HOST_URL}/img`);
-			console.log("data", data);
-		} catch (e) {
-			console.log("e", e);
-		}
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await axios.get(`http://localhost:4000/img`);
+			setImg(result.data);
+		};
+		fetchData();
 	}, []);
 	function imgClick() {
 		imageUpLoader.current.click();
@@ -52,7 +52,7 @@ function App() {
 				/>
 
 				<img
-					src={`${process.env.REACT_APP_HOST_URL}/static/${img.path.slice(6)}`}
+					src={`http://localhost:4000/static/${img.path && img.path.slice(7)}`}
 					ref={uploadedImage}
 					alt={img.originalname}
 					onClick={imgClick}

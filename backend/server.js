@@ -8,11 +8,16 @@ const img = require("./routes/img");
 
 const server = express();
 
+// lets server know to look at folder
+server.use(express.static("./public"));
+
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
 server.use("/img", img);
+// create a path for images
+server.use("/static", express.static("./public"));
 
 server.get("/", (req, res) => res.send("index route"));
 
